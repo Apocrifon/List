@@ -105,17 +105,13 @@ struct list {
     void RemoveAll()
     {
         while (first) {
-            /* пока список не пуст */
             Node* p = first->nextNode;
-            /* запомнили следующий элемент */
             free(first);
-            /* удалили первый элемент */
             first = p;
-            /* теперь первым является тот, который был следующим */
         }
     }
 
-    void print() 
+    void Print() 
     {
         if (IsEmpty()) 
             return  ;
@@ -125,6 +121,50 @@ struct list {
             p = p->nextNode;
         }
         cout << endl;
+    }
+
+    void FindIndex(int index)
+    {
+        int counter = 0;
+        for (Node* i = first; i; i=i->nextNode, counter++)
+        {
+            if (counter == index)
+                cout << i;
+        }
+        cout << endl;
+    }
+
+    void FindValue(string val) 
+    {
+        for (Node* i = first; i; i = i->nextNode)
+        {
+            if (i->value==val)
+                cout << i;
+        }
+        cout << endl;
+    }
+
+    void Retrieve(int index)
+    {
+        int counter = 0;
+        for (Node* i = first; i; i = i->nextNode, counter++)
+        {
+            if (counter == index)
+                cout << i->value;
+        }
+        cout << endl;
+    }
+
+    void Reverse()
+    {
+        Node* prhead = nullptr; // Здесь в итоге окажется указатель на голову перевёрнутого списка.
+        while (first != nullptr)
+        {
+            Node* p = first->nextNode;
+            first->nextNode = prhead;
+            prhead = first;
+            first = p;
+        }
     }
 };
 
@@ -137,12 +177,21 @@ int main()
     a.AddHead("hui");
     a.AddTail("last");
     a.AddTail("3");
-    a.RemoveAll();
-    //a.Insert("in", 0);
+    a.Insert("in", 0);
+    a.Print();
+    a.Reverse();
+    a.Print();
+    //a.Retrieve(1);
+    //a.FindValue("hui");
+    //cout << a.first;
+    //a.FindIndex(4);
+    //cout << a.last;
+    /*a.RemoveAll();*/
+
     //a.RemoveHead();
     //a.RemoveTail();
     //a.AddHead("b");
-    a.Remove(3);
-    a.print();
+    //a.Remove(3);
+
     cout << a.IsEmpty() << endl;
 }
