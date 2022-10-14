@@ -1,4 +1,2 @@
 ﻿  с++ list.cpp
-D:\Repositories\c++ list\с++ list\с++ list.cpp(50,14): warning C4101: 'i': unreferenced local variable
-D:\Repositories\c++ list\с++ list\с++ list.cpp(90,14): warning C4101: 'i': unreferenced local variable
   с++ list.vcxproj -> D:\Repositories\c++ list\x64\Debug\с++ list.exe

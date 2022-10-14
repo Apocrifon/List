@@ -47,7 +47,6 @@ struct list {
     void Insert(string input, int index)
     {
         Node* elem = new Node(input);
-        int* i;
         int counter=0;
         for (Node* p = first; p; p = p->nextNode, counter++) {
             if (index == 0)
@@ -87,7 +86,6 @@ struct list {
 
     void Remove(int index)
     {
-        int* i;
         int counter = 0;
         for (Node* p = first; p; p = p->nextNode, counter++) {
                 if (index == 0)
@@ -157,7 +155,7 @@ struct list {
 
     void Reverse()
     {
-        Node* prhead = nullptr; // Здесь в итоге окажется указатель на голову перевёрнутого списка.
+        Node* prhead = nullptr; 
         while (first != nullptr)
         {
             Node* p = first->nextNode;
@@ -165,6 +163,7 @@ struct list {
             prhead = first;
             first = p;
         }
+        first = prhead;
     }
 };
 
@@ -192,6 +191,5 @@ int main()
     //a.RemoveTail();
     //a.AddHead("b");
     //a.Remove(3);
-
     cout << a.IsEmpty() << endl;
 }
