@@ -5,7 +5,8 @@ struct Node
 {
 	string value;
 	Node* nextNode;
-	Node(string input) : value(input), nextNode(nullptr) {}
+    Node* prevNode;
+	Node(string input) : value(input), nextNode(nullptr), prevNode(nullptr) {}
 };
 
 struct list {
@@ -27,6 +28,7 @@ struct list {
             last = elem;
             return;
         }
+        elem->prevNode = last;
         last->nextNode = elem;
         last = elem;
     }
@@ -40,6 +42,7 @@ struct list {
             last = elem;    
             return;
         }
+        first->prevNode = elem;
         elem->nextNode = first;
         first = elem;
     }
@@ -48,17 +51,22 @@ struct list {
     {
         Node* elem = new Node(input);
         int counter=0;
-        for (Node* p = first; p; p = p->nextNode, counter++) {
-            if (index == 0)
+        if (index == 0)
+        {
+            elem->nextNode = first;
+            first = elem;
+            return;
+        }
+        for (Node* p = first; p; p = p->nextNode, counter++) {       
+            if (counter==index) 
             {
-                elem->nextNode = first;
-                first = elem;
-                return;
-            }
-            if (counter==index-1) {
-                elem->nextNode = p->nextNode;
-                p->nextNode = elem;
-                break;
+                p->prevNode = elem;
+                elem->prevNode = p->prevNode;
+                elem->nextNode = p;
+                p->prevNode = elem;
+                //elem->nextNode = p->nextNode;
+                //p->nextNode = elem;
+                //break;
             }
         }
     }
@@ -66,6 +74,7 @@ struct list {
     void RemoveHead()
     {
         Node* temp = first;
+        first->nextNode->prevNode = nullptr;
         first = first->nextNode;
         delete temp;
     }
@@ -87,15 +96,20 @@ struct list {
     void Remove(int index)
     {
         int counter = 0;
-        for (Node* p = first; p; p = p->nextNode, counter++) {
-                if (index == 0)
+        if (index == 0)
+        {
+            RemoveHead();
+            return;
+        }
+        for (Node* p = first; p; p = p->nextNode, counter++) 
+        {
+            if (counter == index) 
             {
-                RemoveHead();
-                return;
-            }
-            if (counter == index - 1) {
-                p->nextNode = p->nextNode->nextNode;
-                break;
+                p->prevNode->nextNode = p->nextNode;
+                p->nextNode = p->prevNode;
+                delete p;
+                /*p->nextNode = p->nextNode->nextNode;
+                break;*/
             }
         }
     }
@@ -112,7 +126,7 @@ struct list {
     void Print() 
     {
         if (IsEmpty()) 
-            return  ;
+            return;
         Node* p = first;
         while (p) {
             cout << p->value << " ";
@@ -136,18 +150,20 @@ struct list {
     {
         for (Node* i = first; i; i = i->nextNode)
         {
-            if (i->value==val)
+            if (i->value == val)
+            {
                 cout << i;
+                cout << endl;
+            }
         }
         cout << endl;
     }
 
-    void Retrieve(int index)
+    void Retrieve(Node* path)
     {
-        int counter = 0;
-        for (Node* i = first; i; i = i->nextNode, counter++)
+        for (Node* i = first; i; i = i->nextNode)
         {
-            if (counter == index)
+            if (i == path)
                 cout << i->value;
         }
         cout << endl;
@@ -159,6 +175,7 @@ struct list {
         while (first != nullptr)
         {
             Node* p = first->nextNode;
+            first->prevNode = first->nextNode;
             first->nextNode = prhead;
             prhead = first;
             first = p;
